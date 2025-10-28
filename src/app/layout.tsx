@@ -5,11 +5,7 @@ import { fontMartianMono, fontSchibstedGrotesk } from '@/config/fonts';
 
 export { metadata } from '@/config/site';
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <html lang="en">
       <body

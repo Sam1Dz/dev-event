@@ -110,8 +110,8 @@ export function MyComponent({ children }: React.PropsWithChildren) {
 - **Font variables:** CSS variables from `src/config/fonts.ts` (e.g.,
   `font-sans` uses `--font-schibsted-grotesk`)
 - **Tailwind Config:** `src/config/theme.ts` exports HeroUI theme configuration
-- **Dark mode:** Class-based via next-themes; defaults to system preference with `dark:` prefix on
-  Tailwind utilities
+- **Dark mode:** Class-based via next-themes; defaults to system preference with
+  `dark:` prefix on Tailwind utilities
 
 ## Integration Points
 
@@ -128,8 +128,8 @@ export function MyComponent({ children }: React.PropsWithChildren) {
 
 - **HeroUI:** Wrap app in `HeroUIProvider` with `reducedMotion="user"`; use
   built-in components from `@heroui/react`
-- **next-themes:** Configured for class attribute with system preference default;
-  provides `useTheme()` hook in client components
+- **next-themes:** Configured for class attribute with system preference
+  default; provides `useTheme()` hook in client components
 
 ## Testing & Debugging
 
