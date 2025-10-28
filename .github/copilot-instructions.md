@@ -1,95 +1,166 @@
-## Quick context
+# AI Coding Agent Instructions for DevEvent
 
-This is a small Next.js (App Router) site in `src/app` using TypeScript,
-Tailwind and Next 16+ features.
+## Project Overview
 
-- Key files:
-- `package.json` — scripts: `dev`, `build`, `start`, `lint`, `lint:fix`,
-  `format` (run via `bun run <script>` by default).
-- `next.config.ts` — `reactCompiler: true`, `typedRoutes: true`, experimental
-  turbopack setting.
-- `tsconfig.json` — strict TypeScript, path alias `@/* -> ./src/*`.
-- `src/app/layout.tsx` and `src/app/page.tsx` — app router entry and examples of
-  font/CSS usage.
-- `src/app/globals.css` — Tailwind + CSS variables for theme.
-- `eslint.config.mjs` — project lint rules and overrides (note `_`-prefixed
-  ignored vars).
+**DevEvent** is a Next.js 16 portfolio application—a hub for discovering
+developer events. It uses the App Router with TypeScript, Tailwind CSS v4, and
+HeroUI component library with theme support.
 
-## Big-picture architecture
+**Key Stack:**
 
-- App router-based Next.js project: pages live in `src/app`. Components default
-  to server components.
-- Styling: Tailwind + custom CSS variables in `globals.css` (light/dark themes
-  handled via :root and media queries).
-- Fonts: `next/font/google` used in `layout.tsx` with CSS variable injection
-  (see `Geist`/`Geist_Mono` usage).
-- TypeScript: strict settings, no emit; import alias `@/...` points to `src/`
-  (use `import X from '@/components/X'`).
+- **Framework:** Next.js 16 (App Router, React 19, React Compiler enabled)
+- **Styling:** Tailwind CSS v4 with PostCSS, Prettier plugin for class ordering
+- **Components:** HeroUI v2 with theme provider
+- **Theme:** next-themes (class-based, system preference default)
+- **Language:** TypeScript (strict mode, ES2017 target)
+- **Package Manager:** Bun (primary), npm/node v20.9+
 
-## Developer flows & useful commands (run in PowerShell / terminal)
+## Architecture & File Structure
 
-- Start dev server: `bun run dev` (runs `next dev`).
-- Build for production: `bun run build` then `bun run start` to run the compiled
-  app.
-- Lint: `bun run lint`. Auto-fix common issues: `bun run lint:fix`.
-- Format: `bun run format` (prettier + tailwind plugin is enabled).
-- Dependency outdated scan (repo includes `bunx npm-check-updates`):
-  `bun run outdated` (this uses `bunx`).
+### Key Patterns
 
-Notes: This repo is set up to use Bun for script execution. Prefer
-`bun run <script>` for local workflows. Engines in `package.json` still list
-Node (>=20.9.0) and Bun (>=1.2.0); Bun is the recommended runner for
-dev/build/script tasks.
+- **Configuration centralization:** `src/config/` contains fonts, site metadata,
+  and theme config
+- **Provider wrapping:** `Providers` component (`src/components/providers.tsx`)
+  applies HeroUIProvider and NextThemesProvider
+- **Path aliases:** `@/*` resolves to `src/` (configured in `tsconfig.json`)
+- **Layout inheritance:** Root layout (`src/app/layout.tsx`) imports global
+  styles and providers; exports metadata
 
-## Project-specific conventions (do not invent new ones)
+### Essential Files
 
-- Import alias: always prefer `@/` to reference files under `src/` (configured
-  in `tsconfig.json`).
-- ESLint ignores unused vars that begin with `_` — when creating function
-  arguments you expect to ignore, prefix with `_`.
-- Keep components as server components by default (App Router). Add
-  `"use client"` at top of file only when client-side behavior/hooks are needed.
-- CSS variables for fonts are injected in `layout.tsx` (e.g.
-  `--font-geist-sans`). Use those variables in component styles rather than
-  re-importing fonts.
-- Follow ESLint `import/order` grouping used in `eslint.config.mjs` (external,
-  then `@/**` as internal group).
+- `src/app/layout.tsx` — Root layout with font variables, global CSS, Providers
+  wrapper
+- `src/app/page.tsx` — Homepage (currently template)
+- `src/components/providers.tsx` — Client-side context providers (HeroUI,
+  next-themes)
+- `src/config/site.ts` — Metadata export for Next.js
+- `src/config/fonts.ts` — Google Fonts configuration with CSS variables
 
-## Integration points & external deps
+## Developer Workflow
 
-- Next 16+, React 19 — use the app router conventions.
-- TailwindCSS v4 via `postcss.config.mjs` and `@tailwindcss/postcss` plugin.
-- No serverless/backend code in this repo — frontend only; expect static assets
-  in `public/`.
+### Common Commands
 
-## Examples for an AI contributor
+```bash
+bun run dev              # Start dev server (localhost:3000, watch mode)
+bun run build            # Production build
+bun run start            # Run production build locally
+bun run lint             # Run ESLint (flat config via eslint.config.mjs)
+bun run lint:fix         # Auto-fix linting issues
+bun run format           # Prettier formatting
+```
 
-- Add a component:
-  - Place file in `src/components/MyCard.tsx` and import with
-    `import MyCard from '@/components/MyCard'`.
-  - If it uses state or effects add `"use client"` at top.
+### Code Quality Enforcement
 
-- Reference CSS variables set by layout:
-  - `className={styles.someClass} style={{ fontFamily: 'var(--font-geist-sans)' }}`
-    or use Tailwind utility classes mixed with the CSS vars.
+- **On save:** ESLint auto-fix, import organization, and Prettier formatting
+  (VSCode settings)
+- **ESLint rules:** Strict type imports, consistent `no-console` (warn except
+  error/warn logs), prop/import ordering
+- **Prettier:** 80-char line width, single quotes, trailing commas, Tailwind
+  class sorting
+- **TypeScript:** Strict mode enabled; unused vars error (unless prefixed with
+  `_`)
 
-## What not to change without human confirmation
+## Coding Conventions & Patterns
 
-- `next.config.ts` flags (`reactCompiler`, `typedRoutes`, experimental
-  turbopack`) — these affect dev/build behavior.
-- `tsconfig.json` paths and strictness — changing can break imports and typing
-  assumptions.
-- ESLint global ignores and stylistic rules — maintain patterns like `_` prefix
-  for ignored args.
+### Import Organization
 
-## If you need clarification
+Enforce this order (ESLint enforces; Prettier organizes imports):
 
-- I updated/created this file from repo-discovered config. If you want more
-  detail about deploy targets (Vercel config, environment variables, or CI
-  steps), point me to CI files or tell me the intended platform and I'll extend
-  these instructions.
+1. Type imports (`import type { ... }`)
+2. Node builtins
+3. Object/common imports
+4. External packages
+5. Internal `@/*` aliases (after external)
+6. Parent relative (`../`)
+7. Sibling relative (`./`)
+8. Index imports
 
----
+Example:
 
-If this matches what you expect, I can refine examples or add a short checklist
-for PRs (testing/lint/format) next.
+```typescript
+import type { Metadata } from 'next';
+
+import { HeroUIProvider } from '@heroui/react';
+
+import { Providers } from '@/components/providers';
+```
+
+### Component Patterns
+
+- **Use Client Components sparingly:** Mark context providers with
+  `'use client'` (e.g., `providers.tsx`)
+- **Styling:** Inline Tailwind classes; use consistent spacing and layout
+  patterns from existing code
+- **Props:** Destructure and type with `React.PropsWithChildren` or inline type
+  objects
+- **Self-closing components:** Enforce with ESLint rule
+
+Example:
+
+```tsx
+export function MyComponent({ children }: React.PropsWithChildren) {
+  return <div className="flex items-center justify-center">{children}</div>;
+}
+```
+
+### CSS & Styling
+
+- **Global CSS:** `src/styles/globals.css` (included in root layout)
+- **Font variables:** CSS variables from `src/config/fonts.ts` (e.g.,
+  `font-sans` uses `--font-schibsted-grotesk`)
+- **Tailwind Config:** `src/config/theme.ts` exports HeroUI theme configuration
+- **Dark mode:** Class-based via next-themes; defaults to system preference with `dark:` prefix on
+  Tailwind utilities
+
+## Integration Points
+
+### Next.js Features
+
+- **Typed Routes:** Enabled (`typedRoutes: true`) — use typed path strings
+- **Image Optimization:** Use `next/image` component with `priority` for
+  above-fold images
+- **Metadata:** Export from layout files or use `generateMetadata` for dynamic
+  pages
+- **React Compiler:** Enabled for automatic memoization
+
+### External Libraries
+
+- **HeroUI:** Wrap app in `HeroUIProvider` with `reducedMotion="user"`; use
+  built-in components from `@heroui/react`
+- **next-themes:** Configured for class attribute with system preference default;
+  provides `useTheme()` hook in client components
+
+## Testing & Debugging
+
+- **Dev Mode:** `bun dev` enables hot reload with
+  `turbopackFileSystemCacheForDev`
+- **Linting Issues:** Run `bun lint` to identify errors; check VSCode Problems
+  panel (configured for auto-fix on save)
+- **Type Checking:** TypeScript compile errors appear in VSCode diagnostics;
+  check `next-env.d.ts` generated types
+- **Build Validation:** `bun build` catches type and lint issues before
+  production
+
+## When Adding Features
+
+1. **New page:** Create `.tsx` file under `src/app/[route]/page.tsx`; inherit
+   layout + metadata pattern
+2. **New component:** Create in `src/components/`; use `React.PropsWithChildren`
+   for reusable wrappers
+3. **Configuration:** Add to `src/config/` if it's app-wide (metadata, theme,
+   fonts)
+4. **Styling:** Use Tailwind classes inline; reference font variables from
+   `src/config/fonts.ts`
+5. **Always run:** `bun format` → `bun lint:fix` → `bun build` before committing
+
+## Critical Gotchas
+
+- **CSS Variables:** Font variables (e.g., `--font-schibsted-grotesk`) must be
+  applied to ancestors; Tailwind picks them up via `font-sans`
+- **Server vs Client:** Root layout is server component; only wrap children with
+  `Providers` client component
+- **Import paths:** Use `@/*` aliases; relative imports break when files move
+- **Unused variables:** Prefix with `_` if intentionally unused (e.g.,
+  `_unused: boolean`)
+- **Line width:** Prettier enforces 80 chars; long JSX props break to new lines

@@ -1,7 +1,7 @@
 {
   "name": "dev-event",
   "description": "",
-  "version": "2025.1028.0",
+  "version": "2025.1028.1",
   "repository": {
     "type": "git",
     "url": ""
@@ -9,6 +9,7 @@
   "author": "Sam1Dz",
   "license": "MIT",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -24,7 +25,10 @@
     "bun": ">=1.2.0"
   },
   "dependencies": {
+    "@heroui/react": "^2.8.5",
+    "framer-motion": "^12.23.24",
     "next": "^16.0.0",
+    "next-themes": "^0.4.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
