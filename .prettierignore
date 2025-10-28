@@ -1,0 +1,57 @@
+# .prettierignore — tailored for a Next.js + TypeScript project
+# Ignore node modules and editor/OS artifacts
+node_modules
+.vscode
+.DS_Store
+Thumbs.db
+
+# Next.js / build outputs and caches
+.next
+.output
+.out
+dist
+build
+out
+.cache
+
+# Vercel / platform/artifact folders
+.vercel
+.now
+
+# Ignore binary assets (images, archives) in public and other folders
+public/**/*.{png,jpg,jpeg,gif,webp,ico,zip,tar,gz}
+**/*.{png,jpg,jpeg,gif,webp,ico,zip,tar,gz}
+
+# Generated and map/minified files
+*.min.js
+*.map
+*.bundle.js
+
+# Lockfiles and logs (don't format these)
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+bun.lock
+*.log
+
+# Env and secrets
+.env
+.env.*
+
+# Coverage and test output
+coverage
+coverage/*
+
+# Caches from various tools
+.eslintcache
+.cache
+
+# Optional: ignore generated TypeScript declaration files
+*.d.ts
+
+# Ignore build artifacts from other tools
+dist/**
+build/**
+
+# If you prefer Prettier to skip the entire public folder (including text assets), uncomment:
+# public/**
