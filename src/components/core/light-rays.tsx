@@ -704,7 +704,9 @@ export function LightRays({
   return (
     <div
       ref={containerRef}
+      aria-hidden="true"
       className={`pointer-events-none relative z-3 h-full w-full overflow-hidden ${className}`.trim()}
+      role="presentation"
     />
   );
 }

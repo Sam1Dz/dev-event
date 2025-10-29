@@ -7,3 +7,17 @@
   --font-sans: var(--font-schibsted-grotesk);
   --font-mono: var(--font-martian-mono);
 }
+
+@utility text-gradient {
+  @apply to-primary from-foreground via-foreground bg-linear-to-b bg-clip-text font-semibold text-transparent;
+}
+
+@layer base {
+  main {
+    @apply container mx-auto flex flex-col px-5 py-10 sm:px-10;
+  }
+
+  h1 {
+    @apply text-gradient text-6xl font-semibold max-sm:text-4xl;
+  }
+}
