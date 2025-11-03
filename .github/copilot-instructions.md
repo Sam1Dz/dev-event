@@ -31,31 +31,42 @@ HeroUI component library with theme support.
 
 - `src/app/layout.tsx` — Root layout with font variables, global CSS, Providers
   wrapper
-- `src/app/page.tsx` — Homepage (currently template)
+- `src/app/page.tsx` — Homepage displaying featured events
 - `src/components/providers.tsx` — Client-side context providers (HeroUI,
-  next-themes)
+  next-themes) with LightRays background
+- `src/components/layout/navbar.tsx` — Navigation bar with logo and login
+- `src/components/layout/footer.tsx` — Site footer with links
+- `src/components/core/event-card.tsx` — Event card component displaying event
+  info
+- `src/components/core/light-rays.tsx` — WebGL-based light ray animation effect
 - `src/config/site.ts` — Metadata export for Next.js
-- `src/config/fonts.ts` — Google Fonts configuration with CSS variables
+- `src/config/fonts.ts` — Google Fonts configuration (Schibsted Grotesk, Martian
+  Mono)
+- `src/config/theme/` — HeroUI theme configuration (light/dark modes with custom
+  colors)
+- `src/constants/events.ts` — Event data array with EventType export
 
 ## Developer Workflow
 
 ### Common Commands
 
 ```bash
-bun run dev              # Start dev server (localhost:3000, watch mode)
-bun run build            # Production build
-bun run start            # Run production build locally
-bun run lint             # Run ESLint (flat config via eslint.config.mjs)
-bun run lint:fix         # Auto-fix linting issues
-bun run format           # Prettier formatting
+bun dev              # Install dependencies, start dev server (localhost:3000, watch mode)
+bun build            # Install dependencies, auto-fix lint, validate lint, format, build
+bun start            # Run production build locally
+bun format           # Auto-fix lint, format with Prettier, validate lint again
+bun outdated         # Check for outdated dependencies
 ```
 
 ### Code Quality Enforcement
 
 - **On save:** ESLint auto-fix, import organization, and Prettier formatting
   (VSCode settings)
+- **Build script:** Runs
+  `bun install && eslint --fix . && eslint && prettier --write . && next build`
+  in order
 - **ESLint rules:** Strict type imports, consistent `no-console` (warn except
-  error/warn logs), prop/import ordering
+  error/warn logs), prop/import ordering, self-closing components
 - **Prettier:** 80-char line width, single quotes, trailing commas, Tailwind
   class sorting
 - **TypeScript:** Strict mode enabled; unused vars error (unless prefixed with
@@ -109,9 +120,38 @@ export function MyComponent({ children }: React.PropsWithChildren) {
 - **Global CSS:** `src/styles/globals.css` (included in root layout)
 - **Font variables:** CSS variables from `src/config/fonts.ts` (e.g.,
   `font-sans` uses `--font-schibsted-grotesk`)
-- **Tailwind Config:** `src/config/theme.ts` exports HeroUI theme configuration
+- **Tailwind Config:** `src/config/theme/` exports HeroUI theme with light/dark
+  color palettes; index.ts merges both themes
 - **Dark mode:** Class-based via next-themes; defaults to system preference with
   `dark:` prefix on Tailwind utilities
+- **Custom utilities:** `text-gradient` applies primary-to-foreground gradient
+  text; `events-layout` creates responsive 3-column grid
+- **Tailwind v4 syntax:** Uses `@import`, `@plugin`, `@source`, `@layer`
+  directives
+
+## Advanced Features
+
+### LightRays Animation (WebGL)
+
+- **Location:** `src/components/core/light-rays.tsx` — 600+ line WebGL
+  background effect
+- **Tech:** OGL library with GLSL shaders, Intersection Observer for lazy
+  loading
+- **Props:** Customizable origin, color, speed, spread, ray length, mouse
+  following
+- **Integration:** `Providers` component renders LightRaysDecorator that reads
+  theme and passes appropriate ray color
+- **Performance:** Lazy-loads on visibility; smooth mouse tracking with
+  exponential smoothing (92% decay); handles WebGL context loss
+
+### Event Data & Type Safety
+
+- **Source:** `src/constants/events.ts` — Array of event objects with slug,
+  image, date, time, location
+- **Type export:** `EventType = (typeof events)[number]` — Infers type from data
+- **Usage:** `EventCard` destructures EventType props; page maps events to cards
+- **Pattern:** Typed route export structure enables autocomplete across
+  components
 
 ## Integration Points
 
@@ -123,13 +163,21 @@ export function MyComponent({ children }: React.PropsWithChildren) {
 - **Metadata:** Export from layout files or use `generateMetadata` for dynamic
   pages
 - **React Compiler:** Enabled for automatic memoization
+- **Suppress Hydration Warning:** Applied to html tag in layout for next-themes
+  compatibility
 
 ### External Libraries
 
-- **HeroUI:** Wrap app in `HeroUIProvider` with `reducedMotion="user"`; use
-  built-in components from `@heroui/react`
+- **HeroUI:** Wrap app in `HeroUIProvider` with `reducedMotion="user"` and
+  locale="en-GB"; use built-in components from `@heroui/react`; theme colors
+  imported in Providers navigate callback for typed routes
 - **next-themes:** Configured for class attribute with system preference
-  default; provides `useTheme()` hook in client components
+  default; provides `useTheme()` hook in client components; LightRaysDecorator
+  uses `resolvedTheme` and `systemTheme` to pick ray color
+- **react-icons:** HeroUI2 icon integration using `react-icons/hi2` (HeroIcon v2
+  set); used in EventCard, navbar buttons, footer
+- **OGL:** WebGL rendering library for light ray animation; includes type
+  definitions for Renderer, Mesh, Program, Triangle
 
 ## Testing & Debugging
 
@@ -152,7 +200,9 @@ export function MyComponent({ children }: React.PropsWithChildren) {
    fonts)
 4. **Styling:** Use Tailwind classes inline; reference font variables from
    `src/config/fonts.ts`
-5. **Always run:** `bun format` → `bun lint:fix` → `bun build` before committing
+5. **Event data:** Add to `src/constants/events.ts` array; type automatically
+   inferred via EventType
+6. **Always run:** `bun format` → `bun lint:fix` → `bun build` before committing
 
 ## Critical Gotchas
 
@@ -164,3 +214,7 @@ export function MyComponent({ children }: React.PropsWithChildren) {
 - **Unused variables:** Prefix with `_` if intentionally unused (e.g.,
   `_unused: boolean`)
 - **Line width:** Prettier enforces 80 chars; long JSX props break to new lines
+- **suppressHydrationWarning:** Required on html tag for next-themes + server
+  components compatibility
+- **WebGL Context Loss:** LightRays handles WEBGL_lose_context extension for
+  proper resource cleanup
