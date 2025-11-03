@@ -27,6 +27,9 @@ build/
 .git/
 .gitignore
 
+# License files
+LICENSE
+
 # Lock files and configs (keeping as-is from version control)
 .prettierrc
 .eslintrc*
