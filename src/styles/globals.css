@@ -13,11 +13,25 @@
 }
 
 @layer base {
+  * {
+    @apply font-sans;
+  }
+
   main {
     @apply mx-auto flex max-w-7xl flex-col px-6 py-10;
   }
 
   h1 {
     @apply text-gradient text-6xl font-semibold max-sm:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl font-bold;
+  }
+}
+
+@layer components {
+  .events-layout {
+    @apply grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3;
   }
 }
