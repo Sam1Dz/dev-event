@@ -1,8 +1,8 @@
 'use client';
 
 import { Card, CardBody } from '@heroui/react';
-import Image from 'next/image';
-import Link from 'next/link';
+import NextImage from 'next/image';
+import NextLink from 'next/link';
 import { HiCalendarDateRange, HiClock, HiMapPin } from 'react-icons/hi2';
 
 import type { EventType } from '@/constants/events';
@@ -25,13 +25,13 @@ import type { EventType } from '@/constants/events';
  */
 export function EventCard({ date, image, location, time, title }: EventType) {
   return (
-    <Link
+    <NextLink
       aria-label={`${title} event - ${date} at ${time} in ${location}`}
       href="#"
     >
       <Card isBlurred isPressable className="h-full w-full" shadow="sm">
         {/* Event banner image with fixed aspect ratio */}
-        <Image
+        <NextImage
           alt={`${title} event banner`}
           className="h-64 w-full"
           height={256}
@@ -49,7 +49,7 @@ export function EventCard({ date, image, location, time, title }: EventType) {
           </div>
 
           {/* Event title - clamped to single line */}
-          <p className="text-large line-clamp-1 font-semibold">{title}</p>
+          <p className="line-clamp-1 text-xl font-semibold">{title}</p>
 
           {/* Date and time information with icons */}
           <div className="text-foreground/80 flex flex-row flex-wrap items-center gap-4">
@@ -64,6 +64,6 @@ export function EventCard({ date, image, location, time, title }: EventType) {
           </div>
         </CardBody>
       </Card>
-    </Link>
+    </NextLink>
   );
 }

@@ -1,4 +1,4 @@
-import '../styles/globals.css';
+import '@/styles/globals.css';
 
 import { Providers } from '@/components/providers';
 import { fontMartianMono, fontSchibstedGrotesk } from '@/config/fonts';

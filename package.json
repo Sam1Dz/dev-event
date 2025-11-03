@@ -1,10 +1,10 @@
 {
   "name": "dev-event",
   "description": "",
-  "version": "2025.1028.3",
+  "version": "2025.1104.6",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/Sam1Dz/dev-event.git"
   },
   "author": "Sam1Dz",
   "license": "MIT",

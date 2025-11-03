@@ -7,6 +7,7 @@ import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 
 import { LightRays } from '@/components/core/light-rays';
+import { FooterApp } from '@/components/layout/footer';
 import { NavbarApp } from '@/components/layout/navbar';
 
 export function Providers({ children }: React.PropsWithChildren) {
@@ -23,6 +24,7 @@ export function Providers({ children }: React.PropsWithChildren) {
 
         <NavbarApp />
         <main>{children}</main>
+        <FooterApp />
       </NextThemesProvider>
     </HeroUIProvider>
   );

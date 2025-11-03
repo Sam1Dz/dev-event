@@ -20,7 +20,12 @@ export function NavbarApp() {
           className="flex flex-row items-center gap-2"
           href="/"
         >
-          <NextImage alt="" height={24} src="/logo.png" width={24} />
+          <NextImage
+            alt="DevEvent logo"
+            height={24}
+            src="/logo.png"
+            width={24}
+          />
 
           <p className="text-xl font-bold italic">DevEvent</p>
         </NextLink>
