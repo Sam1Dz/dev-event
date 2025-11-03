@@ -14,7 +14,7 @@
 
 @layer base {
   main {
-    @apply container mx-auto flex flex-col px-5 py-10 sm:px-10;
+    @apply mx-auto flex max-w-7xl flex-col px-6 py-10;
   }
 
   h1 {

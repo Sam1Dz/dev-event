@@ -7,7 +7,7 @@ export { metadata } from '@/config/site';
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en">
       <body
         className={`${fontSchibstedGrotesk.variable} ${fontMartianMono.variable} min-h-screen antialiased`}
       >

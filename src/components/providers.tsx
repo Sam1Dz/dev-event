@@ -1,16 +1,27 @@
 'use client';
 
+import type { Route } from 'next';
+
 import { HeroUIProvider } from '@heroui/react';
 import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes';
+import { useRouter } from 'next/navigation';
 
 import { LightRays } from '@/components/core/light-rays';
+import { NavbarApp } from '@/components/layout/navbar';
 
 export function Providers({ children }: React.PropsWithChildren) {
+  const router = useRouter();
+
   return (
-    <HeroUIProvider reducedMotion="user">
+    <HeroUIProvider
+      locale="en-GB"
+      navigate={(path, options) => router.push(path as Route, options)}
+      reducedMotion="user"
+    >
       <NextThemesProvider attribute="class" defaultTheme="system">
         <LightRaysDecorator />
 
+        <NavbarApp />
         <main>{children}</main>
       </NextThemesProvider>
     </HeroUIProvider>
@@ -18,9 +29,10 @@ export function Providers({ children }: React.PropsWithChildren) {
 }
 
 function LightRaysDecorator() {
-  const { resolvedTheme } = useTheme();
+  const { resolvedTheme, systemTheme } = useTheme();
 
-  if (!resolvedTheme) return null;
+  const theme = resolvedTheme || systemTheme || 'light';
+  const raysColor = theme === 'dark' ? '#8cd5b3' : '#1e6a4f';
 
   return (
     <div
@@ -35,7 +47,7 @@ function LightRaysDecorator() {
         mouseInfluence={0.02}
         noiseAmount={0.0}
         rayLength={1.4}
-        raysColor={resolvedTheme === 'dark' ? '#8cd5b3' : '#1e6a4f'}
+        raysColor={raysColor}
         raysOrigin="top-center-offset"
         raysSpeed={0.5}
       />
