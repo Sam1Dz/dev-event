@@ -8,20 +8,9 @@ import { HiCalendarDateRange, HiClock, HiMapPin } from 'react-icons/hi2';
 import type { EventType } from '@/constants/events';
 
 /**
- * EventCard Component - Displays a single event as an interactive card.
- *
- * Renders event information including image, title, location, date, and time
- * in a pressable card format. The card is blurred for visual polish and links
- * to the event details page.
- *
- * @component
- * @param {EventType} props - Event data to display
- * @param {string} props.date - Event date (e.g., "Dec 15, 2024")
- * @param {string} props.image - Image URL or path for event banner
- * @param {string} props.location - Physical or virtual location of the event
- * @param {string} props.time - Event start time (e.g., "2:00 PM")
- * @param {string} props.title - Event title/name
- * @returns A linked card component displaying event information
+ * Displays an event as a pressable card with image, title, location, date, and time.
+ * Renders as a semantic link with accessible aria-label.
+ * @param {EventType} props - Event data including date, image, location, time, and title
  */
 export function EventCard({ date, image, location, time, title }: EventType) {
   return (
@@ -30,7 +19,6 @@ export function EventCard({ date, image, location, time, title }: EventType) {
       href="#"
     >
       <Card isBlurred isPressable className="h-full w-full" shadow="sm">
-        {/* Event banner image with fixed aspect ratio */}
         <NextImage
           alt={`${title} event banner`}
           className="h-64 w-full"
@@ -40,7 +28,6 @@ export function EventCard({ date, image, location, time, title }: EventType) {
         />
 
         <CardBody className="flex flex-col gap-2">
-          {/* Location section with icon */}
           <div className="flex flex-row items-center gap-2">
             <HiMapPin aria-hidden="true" className="text-foreground/80" />
             <p className="text-tiny text-foreground/80 font-mono font-extralight">
@@ -48,10 +35,8 @@ export function EventCard({ date, image, location, time, title }: EventType) {
             </p>
           </div>
 
-          {/* Event title - clamped to single line */}
           <p className="line-clamp-1 text-xl font-semibold">{title}</p>
 
-          {/* Date and time information with icons */}
           <div className="text-foreground/80 flex flex-row flex-wrap items-center gap-4">
             <div className="flex flex-row gap-2">
               <HiCalendarDateRange aria-hidden="true" />
