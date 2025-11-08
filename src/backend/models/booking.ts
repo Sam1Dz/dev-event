@@ -1,51 +1,61 @@
 import 'server-only';
 
-import type { Schema } from 'mongoose';
+import mongoose, { Schema, type Model } from 'mongoose';
 
-import mongoose from 'mongoose';
+import type { BookingModels } from '@/core/types/booking';
 
-import type { MongoBaseDocument } from '@/core/types/mongodb';
-
-export interface BookingModel extends MongoBaseDocument {
-  eventId: mongoose.Types.ObjectId;
-  email: string;
-}
-
-const bookingSchema: Schema<BookingModel> = new mongoose.Schema<BookingModel>(
+/** Booking schema linking events to attendee email addresses */
+const BookingSchema: Schema = new Schema(
   {
     eventId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Event',
       required: [true, 'Event ID is required'],
-      index: true,
     },
     email: {
       type: String,
       required: [true, 'Email is required'],
-      lowercase: true,
       trim: true,
-      match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        'Please provide a valid email address',
-      ],
+      lowercase: true,
+      validate: {
+        validator: function (email: string) {
+          // RFC-based email validation: basic check for local@domain.ext format
+          return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
+        },
+        message: 'Please enter a valid email address',
+      },
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 );
 
-// Verify that the referenced event exists before saving
-bookingSchema.pre('save', async function (next) {
-  const Event = mongoose.model('Event');
+// Index on eventId for efficient queries filtering bookings by event
+BookingSchema.index({ eventId: 1 });
 
-  const eventExists = await Event.findById(this.eventId);
+/**
+ * Pre-save hook: Validates referential integrity by ensuring referenced event exists
+ */
+BookingSchema.pre<BookingModels>('save', async function (next) {
+  try {
+    const Event = mongoose.model('Event');
+    const eventExists = await Event.exists({ _id: this.eventId });
 
-  if (!eventExists) {
-    return next(new Error(`Event with ID ${this.eventId} does not exist`));
+    // Prevent orphaned bookings pointing to non-existent events
+    if (!eventExists) {
+      return next(new Error('Referenced event does not exist'));
+    }
+
+    next();
+  } catch (error) {
+    return next(error instanceof Error ? error : new Error(String(error)));
   }
-
-  next();
 });
 
-export const Booking =
+/** Mongoose model instance for Booking documents */
+const Booking: Model<BookingModels> =
   mongoose.models.Booking ||
-  mongoose.model<BookingModel>('Booking', bookingSchema);
+  mongoose.model<BookingModels>('Booking', BookingSchema);
+
+export default Booking;
