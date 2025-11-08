@@ -2,7 +2,7 @@ import 'server-only';
 
 import mongoose from 'mongoose';
 
-import { envServer } from '@/config/env';
+import { envServer } from '@/core/config/env';
 
 /** Global MongoDB connection cache for reuse across serverless function invocations */
 declare global {

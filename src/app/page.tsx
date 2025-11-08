@@ -1,6 +1,6 @@
-import { EventCard } from '@/components/core/event-card';
-import { ExploreButton } from '@/components/main/home/explore-button';
-import { events } from '@/constants/events';
+import { events } from '@/core/constants/events';
+import { EventCard } from '@/frontend/components/core/event-card';
+import { ExploreButton } from '@/frontend/components/main/home/explore-button';
 
 export default function Page() {
   return (

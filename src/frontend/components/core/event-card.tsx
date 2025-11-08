@@ -5,7 +5,7 @@ import NextImage from 'next/image';
 import NextLink from 'next/link';
 import { HiCalendarDateRange, HiClock, HiMapPin } from 'react-icons/hi2';
 
-import type { EventType } from '@/constants/events';
+import type { EventType } from '@/core/constants/events';
 
 /**
  * Displays an event as a pressable card with image, title, location, date, and time.

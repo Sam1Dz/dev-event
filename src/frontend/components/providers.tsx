@@ -6,9 +6,9 @@ import { HeroUIProvider } from '@heroui/react';
 import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 
-import { LightRays } from '@/components/core/light-rays';
-import { FooterApp } from '@/components/layout/footer';
-import { NavbarApp } from '@/components/layout/navbar';
+import { LightRays } from '@/frontend/components/core/light-rays';
+import { FooterApp } from '@/frontend/components/layout/footer';
+import { NavbarApp } from '@/frontend/components/layout/navbar';
 
 export function Providers({ children }: React.PropsWithChildren) {
   const router = useRouter();

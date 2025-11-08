@@ -1,8 +1,10 @@
+import 'server-only';
+
 import type { Schema } from 'mongoose';
 
 import mongoose from 'mongoose';
 
-import type { MongoBaseDocument } from '@/types/mongodb';
+import type { MongoBaseDocument } from '@/core/types/mongodb';
 
 export interface BookingModel extends MongoBaseDocument {
   eventId: mongoose.Types.ObjectId;
