@@ -1,3 +1,5 @@
+import 'server-only';
+
 export const HTTP_STATUS = {
   // 2xx Success
   OK: {
@@ -6,180 +8,150 @@ export const HTTP_STATUS = {
   },
   CREATED: {
     code: 201,
-    message: 'Created',
+    message: 'CREATED',
   },
   ACCEPTED: {
     code: 202,
-    message: 'Accepted',
+    message: 'ACCEPTED',
   },
   NO_CONTENT: {
     code: 204,
-    message: 'No Content',
-  },
-
-  // 3xx Redirection
-  MULTIPLE_CHOICES: {
-    code: 300,
-    message: 'Multiple Choices',
-  },
-  MOVED_PERMANENTLY: {
-    code: 301,
-    message: 'Moved Permanently',
-  },
-  FOUND: {
-    code: 302,
-    message: 'Found',
-  },
-  SEE_OTHER: {
-    code: 303,
-    message: 'See Other',
-  },
-  NOT_MODIFIED: {
-    code: 304,
-    message: 'Not Modified',
-  },
-  TEMPORARY_REDIRECT: {
-    code: 307,
-    message: 'Temporary Redirect',
-  },
-  PERMANENT_REDIRECT: {
-    code: 308,
-    message: 'Permanent Redirect',
+    message: 'NO_CONTENT',
   },
 
   // 4xx Client Error
   BAD_REQUEST: {
     code: 400,
-    message: 'Bad Request',
+    message: 'BAD_REQUEST',
   },
   UNAUTHORIZED: {
     code: 401,
-    message: 'Unauthorized',
+    message: 'UNAUTHORIZED',
   },
   PAYMENT_REQUIRED: {
     code: 402,
-    message: 'Payment Required',
+    message: 'PAYMENT_REQUIRED',
   },
   FORBIDDEN: {
     code: 403,
-    message: 'Forbidden',
+    message: 'FORBIDDEN',
   },
   NOT_FOUND: {
     code: 404,
-    message: 'Not Found',
+    message: 'NOT_FOUND',
   },
   METHOD_NOT_ALLOWED: {
     code: 405,
-    message: 'Method Not Allowed',
+    message: 'METHOD_NOT_ALLOWED',
   },
   NOT_ACCEPTABLE: {
     code: 406,
-    message: 'Not Acceptable',
+    message: 'NOT_ACCEPTABLE',
   },
   CONFLICT: {
     code: 409,
-    message: 'Conflict',
+    message: 'CONFLICT',
   },
   GONE: {
     code: 410,
-    message: 'Gone',
+    message: 'GONE',
   },
   LENGTH_REQUIRED: {
     code: 411,
-    message: 'Length Required',
+    message: 'LENGTH_REQUIRED',
   },
   PRECONDITION_FAILED: {
     code: 412,
-    message: 'Precondition Failed',
+    message: 'PRECONDITION_FAILED',
   },
   PAYLOAD_TOO_LARGE: {
     code: 413,
-    message: 'Payload Too Large',
+    message: 'PAYLOAD_TOO_LARGE',
   },
   URI_TOO_LONG: {
     code: 414,
-    message: 'URI Too Long',
+    message: 'URI_TOO_LONG',
   },
   UNSUPPORTED_MEDIA_TYPE: {
     code: 415,
-    message: 'Unsupported Media Type',
+    message: 'UNSUPPORTED_MEDIA_TYPE',
   },
   RANGE_NOT_SATISFIABLE: {
     code: 416,
-    message: 'Range Not Satisfiable',
+    message: 'RANGE_NOT_SATISFIABLE',
   },
   EXPECTATION_FAILED: {
     code: 417,
-    message: 'Expectation Failed',
+    message: 'EXPECTATION_FAILED',
   },
   UNPROCESSABLE_ENTITY: {
     code: 422,
-    message: 'Unprocessable Entity',
+    message: 'UNPROCESSABLE_ENTITY',
   },
   LOCKED: {
     code: 423,
-    message: 'Locked',
+    message: 'LOCKED',
   },
   FAILED_DEPENDENCY: {
     code: 424,
-    message: 'Failed Dependency',
+    message: 'FAILED_DEPENDENCY',
   },
   TOO_EARLY: {
     code: 425,
-    message: 'Too Early',
+    message: 'TOO_EARLY',
   },
   UPGRADE_REQUIRED: {
     code: 426,
-    message: 'Upgrade Required',
+    message: 'UPGRADE_REQUIRED',
   },
   PRECONDITION_REQUIRED: {
     code: 428,
-    message: 'Precondition Required',
+    message: 'PRECONDITION_REQUIRED',
   },
   TOO_MANY_REQUESTS: {
     code: 429,
-    message: 'Too Many Requests',
+    message: 'TOO_MANY_REQUESTS',
   },
   REQUEST_HEADER_FIELDS_TOO_LARGE: {
     code: 431,
-    message: 'Request Header Fields Too Large',
+    message: 'REQUEST_HEADER_FIELDS_TOO_LARGE',
   },
 
   // 5xx Server Error
   INTERNAL_SERVER_ERROR: {
     code: 500,
-    message: 'Internal Server Error',
+    message: 'INTERNAL_SERVER_ERROR',
   },
   NOT_IMPLEMENTED: {
     code: 501,
-    message: 'Not Implemented',
+    message: 'NOT_IMPLEMENTED',
   },
   BAD_GATEWAY: {
     code: 502,
-    message: 'Bad Gateway',
+    message: 'BAD_GATEWAY',
   },
   SERVICE_UNAVAILABLE: {
     code: 503,
-    message: 'Service Unavailable',
+    message: 'SERVICE_UNAVAILABLE',
   },
   GATEWAY_TIMEOUT: {
     code: 504,
-    message: 'Gateway Timeout',
+    message: 'GATEWAY_TIMEOUT',
   },
   HTTP_VERSION_NOT_SUPPORTED: {
     code: 505,
-    message: 'HTTP Version Not Supported',
+    message: 'HTTP_VERSION_NOT_SUPPORTED',
   },
   INSUFFICIENT_STORAGE: {
     code: 507,
-    message: 'Insufficient Storage',
+    message: 'INSUFFICIENT_STORAGE',
   },
   NOT_EXTENDED: {
     code: 510,
-    message: 'Not Extended',
+    message: 'NOT_EXTENDED',
   },
   NETWORK_AUTHENTICATION_REQUIRED: {
     code: 511,
-    message: 'Network Authentication Required',
+    message: 'NETWORK_AUTHENTICATION_REQUIRED',
   },
 } as const;

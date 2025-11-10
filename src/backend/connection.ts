@@ -49,6 +49,7 @@ async function connectToDatabase(): Promise<typeof mongoose> {
   } catch (error) {
     // Clear promise on error to allow retry on next call
     cached.promise = null;
+
     throw error;
   }
 }
