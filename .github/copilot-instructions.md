@@ -51,7 +51,9 @@ backend persists event and booking data in MongoDB with Mongoose ODM.
 - `src/frontend/config/theme/` — HeroUI theme configuration (light/dark modes
   with custom colors)
 - `src/core/constants/events.ts` — Event data array with EventType export
-- `src/core/types/` — Shared TypeScript types (Event, Booking, MongoDB)
+- `src/core/types/` — Shared domain types (Event, Booking)
+- `src/backend/types/mongodb.ts` — MongoDB-specific types (MongoEntityId,
+  MongooseConnection)
 - `src/core/config/env.ts` — Environment validation (@t3-oss/env-nextjs)
 - `src/backend/models/event.ts` — Event Mongoose schema with pre-save hooks
 - `src/backend/models/booking.ts` — Booking Mongoose schema with referential
