@@ -1,3 +1,5 @@
+import 'server-only';
+
 import type mongoose from 'mongoose';
 
 export interface MongooseConnection {

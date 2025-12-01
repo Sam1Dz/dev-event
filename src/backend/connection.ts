@@ -2,8 +2,11 @@ import 'server-only';
 
 import mongoose from 'mongoose';
 
+import type {
+  MongoEntityId,
+  MongooseConnection,
+} from '@/backend/types/mongodb';
 import { envServer } from '@/core/config/env';
-import type { MongoEntityId, MongooseConnection } from '@/core/types/mongodb';
 
 /** Global MongoDB connection cache for reuse across serverless function invocations */
 const cached: MongooseConnection = global.mongoose || {
@@ -46,6 +49,7 @@ async function connectToDatabase(): Promise<typeof mongoose> {
   } catch (error) {
     // Clear promise on error to allow retry on next call
     cached.promise = null;
+
     throw error;
   }
 }
