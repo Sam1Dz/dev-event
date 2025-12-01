@@ -169,7 +169,7 @@ export function MyComponent({ children }: React.PropsWithChildren) {
 
 - **Shared types:** `src/core/types/event.ts` and `src/core/types/booking.ts`
   define Mongoose document interfaces
-- **MongoDB types:** `src/core/types/mongodb.ts` exports `MongoEntityId` and
+- **MongoDB types:** `src/backend/types/mongodb.ts` exports `MongoEntityId` and
   `MongooseConnection` interface
 
 ## API Layer Architecture

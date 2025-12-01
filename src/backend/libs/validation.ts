@@ -19,7 +19,18 @@ export async function validateRequest<T>(
   request: Request,
   schema: z.ZodSchema<T>,
 ): Promise<T> {
-  const body = await request.json();
+  let body;
+
+  try {
+    body = await request.json();
+  } catch {
+    throw apiError(
+      HTTP_STATUS.BAD_REQUEST.message,
+      HTTP_STATUS.BAD_REQUEST.code,
+      [{ detail: 'Invalid JSON payload', attr: null }],
+    );
+  }
+
   const validationResult = schema.safeParse(body);
 
   if (!validationResult.success) {

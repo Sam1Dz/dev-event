@@ -63,11 +63,14 @@ export function apiError(
  * @returns JSON error response with status 500
  */
 export function internalServerError(error: unknown) {
+  if (error instanceof NextResponse) {
+    return error;
+  }
+
   console.error('API Route Error:', error);
 
   // Extract error message or use generic fallback to avoid leaking sensitive info
-  const detail =
-    error instanceof Error ? error.message : 'Unknown server error';
+  const detail = 'Internal server error';
 
   return apiError(
     HTTP_STATUS.INTERNAL_SERVER_ERROR.message,

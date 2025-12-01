@@ -17,7 +17,11 @@ export async function GET() {
     const result = await withDatabase(async () => {
       const db = mongoose.connection;
 
-      await db.db?.admin().ping();
+      if (!db.db) {
+        throw new Error('MongoDB connection not initialized');
+      }
+
+      await db.db.admin().ping();
 
       return apiSuccess(
         HTTP_STATUS.OK.message,
