@@ -110,7 +110,7 @@ EventSchema.index({ slug: 1 }, { unique: true });
 /**
  * Pre-save hook: Auto-generates URL-friendly slug and normalizes date/time formats
  */
-EventSchema.pre<EventModels>('save', async function (next) {
+EventSchema.pre<EventModels>('save', async function () {
   // Auto-generate slug from title if new document or title modified
   if (this.isNew || this.isModified('title')) {
     // Sanitize title: lowercase, remove special chars, replace spaces with hyphens
@@ -142,7 +142,7 @@ EventSchema.pre<EventModels>('save', async function (next) {
       }
       this.date = dateObj.toISOString().split('T')[0];
     } catch {
-      return next(new Error('Date must be a valid date'));
+      throw new Error('Date must be a valid date');
     }
   }
 
@@ -159,11 +159,9 @@ EventSchema.pre<EventModels>('save', async function (next) {
 
       this.time = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
     } catch {
-      return next(new Error('Time must be in HH:MM format'));
+      throw new Error('Time must be in HH:MM format');
     }
   }
-
-  next();
 });
 
 /** Mongoose model instance for Event documents */

@@ -48,10 +48,10 @@ const UserSchema: Schema = new Schema(
  * Pre-save middleware to hash the password before saving.
  * Only hashes if the password field has been modified.
  */
-UserSchema.pre<UserModels>('save', async function (next) {
+UserSchema.pre<UserModels>('save', async function () {
   // Skip hashing if password hasn't changed
   if (!this.isModified('password')) {
-    return next();
+    return;
   }
 
   try {
@@ -60,9 +60,8 @@ UserSchema.pre<UserModels>('save', async function (next) {
 
     // Hash the password with the generated salt
     this.password = await bcrypt.hash(this.password!, salt);
-    next();
   } catch (error) {
-    return next(error instanceof Error ? error : new Error(String(error)));
+    throw error instanceof Error ? error : new Error(String(error));
   }
 });
 

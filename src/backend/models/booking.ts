@@ -37,19 +37,13 @@ BookingSchema.index({ eventId: 1 });
 /**
  * Pre-save hook: Validates referential integrity by ensuring referenced event exists
  */
-BookingSchema.pre<BookingModels>('save', async function (next) {
-  try {
-    const Event = mongoose.model('Event');
-    const eventExists = await Event.exists({ _id: this.eventId });
+BookingSchema.pre<BookingModels>('save', async function () {
+  const Event = mongoose.model('Event');
+  const eventExists = await Event.exists({ _id: this.eventId });
 
-    // Prevent orphaned bookings pointing to non-existent events
-    if (!eventExists) {
-      return next(new Error('Referenced event does not exist'));
-    }
-
-    next();
-  } catch (error) {
-    return next(error instanceof Error ? error : new Error(String(error)));
+  // Prevent orphaned bookings pointing to non-existent events
+  if (!eventExists) {
+    throw new Error('Referenced event does not exist');
   }
 });
 
