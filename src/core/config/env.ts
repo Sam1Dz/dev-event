@@ -19,3 +19,12 @@ export const envServer = createEnv({
     UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
   },
 });
+
+export const envPublic = createEnv({
+  client: {
+    NEXT_PUBLIC_IS_TESTING: z.string().default('false'),
+  },
+  experimental__runtimeEnv: {
+    NEXT_PUBLIC_IS_TESTING: process.env.NEXT_PUBLIC_IS_TESTING,
+  },
+});
