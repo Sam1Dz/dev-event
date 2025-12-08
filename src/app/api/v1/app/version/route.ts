@@ -4,7 +4,7 @@ import { HTTP_STATUS } from '@/backend/constants/http-status';
 import { apiSuccess, internalServerError } from '@/backend/libs/response';
 
 /**
- * GET /api/app/version
+ * GET /api/v1/app/version
  * Version information endpoint that returns the current Git commit hash and package.json version.
  * Useful for debugging to determine which version of the code is running in production.
  */
@@ -18,7 +18,7 @@ export async function GET() {
       commitHash = 'unknown';
     }
 
-    const pkg = await import('../../../../../package.json', {
+    const pkg = await import('../../../../../../package.json', {
       assert: { type: 'json' },
     });
     const version = pkg.default.version;

@@ -7,7 +7,7 @@ import { HTTP_STATUS } from '@/backend/constants/http-status';
 import { apiError, apiSuccess } from '@/backend/libs/response';
 
 /**
- * GET /api/app/db-check
+ * GET /api/v1/app/db-check
  * Database connection check endpoint to confirm the Next.js server can communicate with MongoDB.
  * Used for readiness probes by hosting platforms.
  * Runs a non-intensive ping command against the database without fetching data.

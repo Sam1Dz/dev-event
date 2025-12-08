@@ -21,7 +21,7 @@ const ratelimit = new Ratelimit({
 });
 
 /**
- * POST /api/auth/register
+ * POST /api/v1/auth/register
  * Handles user registration.
  * Includes rate limiting, input validation, honeypot check, and user creation.
  */

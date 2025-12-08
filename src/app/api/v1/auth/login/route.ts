@@ -31,7 +31,7 @@ const emailLimiter = new Ratelimit({
 });
 
 /**
- * POST /api/auth/login
+ * POST /api/v1/auth/login
  * Handles user login.
  * Validates credentials, enforces rate limits, issues tokens, and sets secure cookies.
  */
