@@ -1,7 +1,7 @@
 import type { Document } from 'mongoose';
 import type { z } from 'zod';
 
-import type { registerSchema } from '@/core/schema/user';
+import type { loginSchema, registerSchema } from '@/core/schema/user';
 
 /* MODELS */
 export interface UserModels extends Document {
@@ -15,4 +15,5 @@ export interface UserModels extends Document {
 }
 
 /* SCHEMAS */
+export type LoginSchema = z.infer<typeof loginSchema>;
 export type RegisterSchema = z.infer<typeof registerSchema>;

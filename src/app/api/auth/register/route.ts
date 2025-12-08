@@ -17,15 +17,21 @@ const ratelimit = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(3, '1 h'),
   analytics: true,
-  prefix: '@upstash/ratelimit',
+  prefix: 'register/ratelimit/ip',
 });
 
+/**
+ * POST /api/auth/register
+ * Handles user registration.
+ * Includes rate limiting, input validation, honeypot check, and user creation.
+ */
 export async function POST(request: Request) {
   return withDatabase(async () => {
     try {
       const headersList = await headers();
       const ip = headersList.get('x-forwarded-for') ?? '127.0.0.1';
 
+      // Rate limit: 3 requests per hour per IP
       const { success } = await ratelimit.limit(
         createRedisKey(`ratelimit:register:${ip}`),
       );
@@ -45,6 +51,7 @@ export async function POST(request: Request) {
 
       const body = await validateRequest(request, registerSchema);
 
+      // Honeypot check: _honey field should be empty
       if (body._honey) {
         return apiError(
           HTTP_STATUS.BAD_REQUEST.message,
@@ -55,6 +62,7 @@ export async function POST(request: Request) {
 
       const existingUser = await User.findOne({ email: body.email });
 
+      // If user exists, return success to prevent email enumeration
       if (existingUser) {
         return apiSuccess(
           HTTP_STATUS.OK.message,

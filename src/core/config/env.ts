@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 export const envServer = createEnv({
   server: {
+    AUTH_SECRET: z.string().min(1, 'AUTH_SECRET cannot be empty'),
     MONGODB_URI: z.url().min(1, 'MONGODB_URI cannot be empty'),
     MONGODB_DB_NAME: z.string().min(1, 'MONGODB_DB_NAME cannot be empty'),
     UPSTASH_REDIS_REST_URL: z
@@ -13,6 +14,7 @@ export const envServer = createEnv({
       .min(1, 'UPSTASH_REDIS_REST_TOKEN cannot be empty'),
   },
   experimental__runtimeEnv: {
+    AUTH_SECRET: process.env.AUTH_SECRET,
     MONGODB_URI: process.env.MONGODB_URI,
     MONGODB_DB_NAME: process.env.MONGODB_DB_NAME,
     UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
