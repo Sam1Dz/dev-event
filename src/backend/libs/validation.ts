@@ -1,5 +1,6 @@
 import 'server-only';
 
+import type { NextRequest } from 'next/server';
 import type z from 'zod';
 import type { $ZodIssue } from 'zod/v4/core';
 
@@ -9,14 +10,16 @@ import { apiError } from './response';
 
 /**
  * Validates request body against a Zod schema.
- * @template T - The type of validated data
- * @param {Request} request - HTTP request object
- * @param {z.ZodSchema<T>} schema - Zod schema for validation
- * @returns {Promise<T>} Validated and parsed request body
- * @throws {NextResponse} Error response if validation fails
+ * Handles JSON parsing errors and Zod validation failures.
+ *
+ * @template T - The type of the validated data.
+ * @param request - The incoming NextRequest object.
+ * @param schema - Zod schema to validate against.
+ * @returns Promise resolving to the validated data.
+ * @throws {Response} If validation fails or JSON is malformed.
  */
 export async function validateRequest<T>(
-  request: Request,
+  request: NextRequest,
   schema: z.ZodSchema<T>,
 ): Promise<T> {
   let body;
@@ -41,10 +44,10 @@ export async function validateRequest<T>(
 }
 
 /**
- * Transforms Zod validation issues into standardized API error response.
- * Maps schema path and error message to error object format.
- * @param {$ZodIssue[]} issues - Array of Zod validation issues
- * @returns Formatted API error response with status 400
+ * Transforms Zod validation issues into a standardized API error response.
+ *
+ * @param issues - Array of Zod validation issues.
+ * @returns Standardized API error response (Bad Request).
  */
 export function validationError(issues: $ZodIssue[]) {
   // Transform validation issues into error detail objects with field paths

@@ -6,6 +6,42 @@ import mongoose, { Schema, type Model } from 'mongoose';
 import type { UserModels } from '@/core/types/user';
 
 /**
+ * Schema definition for user sessions.
+ * Stores access token, refresh token, and device metadata.
+ */
+const SessionSchema = new Schema(
+  {
+    accessToken: {
+      type: String,
+      index: true,
+    },
+    refreshToken: {
+      type: String,
+      index: true,
+    },
+    os: {
+      type: String,
+    },
+    browser: {
+      type: String,
+    },
+    ip: {
+      type: String,
+    },
+    location: {
+      type: String,
+    },
+    type: {
+      type: String,
+      enum: ['credential', 'github'],
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+/**
  * Mongoose schema definition for the User model.
  * Includes validation, timestamps, and password handling.
  */
@@ -34,9 +70,8 @@ const UserSchema: Schema = new Schema(
       required: [true, 'Password is required'],
       select: false,
     },
-    refreshToken: {
-      type: String,
-      select: false,
+    sessions: {
+      type: [SessionSchema],
     },
   },
   {

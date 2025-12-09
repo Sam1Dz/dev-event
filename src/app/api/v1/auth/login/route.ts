@@ -1,11 +1,12 @@
 import type { NextRequest } from 'next/server';
 
 import { Ratelimit } from '@upstash/ratelimit';
-import { cookies, headers } from 'next/headers';
+import { cookies } from 'next/headers';
 
 import { withDatabase } from '@/backend/connection';
 import { HTTP_STATUS } from '@/backend/constants/http-status';
 import { signToken } from '@/backend/libs/jwt';
+import { getClientIP, getUserAgent } from '@/backend/libs/metadata';
 import { createRedisKey, redis } from '@/backend/libs/redis';
 import {
   apiError,
@@ -33,12 +34,12 @@ const emailLimiter = new Ratelimit({
 /**
  * POST /api/v1/auth/login
  * Handles user login.
- * Validates credentials, enforces rate limits, issues tokens, and sets secure cookies.
+ * Validates credentials, enforces IP and email rate limits, creates a new session,
+ * and sets secure HTTP-only cookies for access and refresh tokens.
  */
 export async function POST(req: NextRequest) {
   try {
-    const headersList = await headers();
-    const ip = headersList.get('x-forwarded-for') ?? '127.0.0.1';
+    const ip = getClientIP(req);
 
     // IP-based rate limit: 10 attempts per 10 minutes
     const { success: ipSuccess } = await ipLimiter.limit(
@@ -104,8 +105,16 @@ export async function POST(req: NextRequest) {
       const accessToken = await signToken({ userId: user._id }, '15m');
       const refreshToken = await signToken({ userId: user._id }, '7d');
 
-      // Rotate refresh token in database
-      user.refreshToken = refreshToken;
+      // Create new session
+      const sessionInfo = await getUserAgent(req);
+
+      user.sessions.push({
+        ...sessionInfo,
+        accessToken,
+        refreshToken,
+        type: 'credential',
+      });
+
       await user.save();
 
       const cookieStore = await cookies();

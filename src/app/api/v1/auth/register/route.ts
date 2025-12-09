@@ -1,8 +1,10 @@
+import type { NextRequest } from 'next/server';
+
 import { Ratelimit } from '@upstash/ratelimit';
-import { headers } from 'next/headers';
 
 import { withDatabase } from '@/backend/connection';
 import { HTTP_STATUS } from '@/backend/constants/http-status';
+import { getClientIP } from '@/backend/libs/metadata';
 import { createRedisKey, redis } from '@/backend/libs/redis';
 import {
   apiError,
@@ -23,13 +25,13 @@ const ratelimit = new Ratelimit({
 /**
  * POST /api/v1/auth/register
  * Handles user registration.
- * Includes rate limiting, input validation, honeypot check, and user creation.
+ * detailed checks include rate limiting, input validation, and honeypot field verification.
+ * Creates a new user if the email is unique.
  */
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
   return withDatabase(async () => {
     try {
-      const headersList = await headers();
-      const ip = headersList.get('x-forwarded-for') ?? '127.0.0.1';
+      const ip = getClientIP(req);
 
       // Rate limit: 3 requests per hour per IP
       const { success } = await ratelimit.limit(
@@ -49,7 +51,7 @@ export async function POST(request: Request) {
         );
       }
 
-      const body = await validateRequest(request, registerSchema);
+      const body = await validateRequest(req, registerSchema);
 
       // Honeypot check: _honey field should be empty
       if (body._honey) {
