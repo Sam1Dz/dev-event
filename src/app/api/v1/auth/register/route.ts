@@ -22,12 +22,6 @@ const ratelimit = new Ratelimit({
   prefix: 'register/ratelimit/ip',
 });
 
-/**
- * POST /api/v1/auth/register
- * Handles user registration.
- * detailed checks include rate limiting, input validation, and honeypot field verification.
- * Creates a new user if the email is unique.
- */
 export async function POST(req: NextRequest) {
   return withDatabase(async () => {
     try {

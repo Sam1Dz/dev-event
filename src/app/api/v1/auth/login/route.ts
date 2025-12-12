@@ -15,6 +15,7 @@ import {
 } from '@/backend/libs/response';
 import { validateRequest } from '@/backend/libs/validation';
 import User from '@/backend/models/user';
+import { isProduction } from '@/core/libs/env';
 import { loginSchema } from '@/core/schema/user';
 
 const ipLimiter = new Ratelimit({
@@ -31,12 +32,6 @@ const emailLimiter = new Ratelimit({
   prefix: 'login/ratelimit/email',
 });
 
-/**
- * POST /api/v1/auth/login
- * Handles user login.
- * Validates credentials, enforces IP and email rate limits, creates a new session,
- * and sets secure HTTP-only cookies for access and refresh tokens.
- */
 export async function POST(req: NextRequest) {
   try {
     const ip = getClientIP(req);
@@ -122,7 +117,7 @@ export async function POST(req: NextRequest) {
       // Set Access Token Cookie
       cookieStore.set('accessToken', accessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: isProduction(),
         sameSite: 'strict',
         maxAge: 15 * 60, // 15 minutes
         path: '/',
@@ -130,29 +125,20 @@ export async function POST(req: NextRequest) {
 
       cookieStore.set('refreshToken', refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: isProduction(),
         sameSite: 'strict',
         maxAge: 7 * 24 * 60 * 60, // 7 days
         path: '/',
       });
 
-      const responseData = body.returnToken
-        ? {
-            accessToken,
-            refreshToken,
-          }
-        : null;
-
       return apiSuccess(
         HTTP_STATUS.OK.message,
         HTTP_STATUS.OK.code,
-        responseData,
+        null,
         'Login successful',
       );
     });
   } catch (error) {
-    if (error instanceof Response) return error;
-
     return internalServerError(error);
   }
 }

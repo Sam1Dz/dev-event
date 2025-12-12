@@ -4,7 +4,7 @@ import { SignJWT, jwtVerify } from 'jose';
 
 import { envServer } from '@/core/config/env';
 
-const SECRET_KEY = new TextEncoder().encode(envServer.AUTH_SECRET);
+const SECRET_KEY = new TextEncoder().encode(envServer.SESSION_SECRET);
 const ALG = 'HS256';
 
 /**
