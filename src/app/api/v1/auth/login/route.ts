@@ -105,12 +105,13 @@ export async function POST(req: NextRequest) {
 
       user.sessions.push({
         ...sessionInfo,
-        accessToken,
         refreshToken,
         type: 'credential',
       });
 
       await user.save();
+
+      const sessionId = user.sessions[user.sessions.length - 1]._id!.toString();
 
       const cookieStore = await cookies();
 
@@ -124,6 +125,14 @@ export async function POST(req: NextRequest) {
       });
 
       cookieStore.set('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: isProduction(),
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60, // 7 days
+        path: '/',
+      });
+
+      cookieStore.set('sessionId', sessionId, {
         httpOnly: true,
         secure: isProduction(),
         sameSite: 'strict',

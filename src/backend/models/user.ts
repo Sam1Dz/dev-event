@@ -9,12 +9,8 @@ import type { UserModels } from '@/core/types/user';
  * Schema definition for user sessions.
  * Stores access token, refresh token, and device metadata.
  */
-const SessionSchema = new Schema(
+const SessionSchema: Schema = new Schema(
   {
-    accessToken: {
-      type: String,
-      index: true,
-    },
     refreshToken: {
       type: String,
       index: true,

@@ -10,7 +10,7 @@ import { envServer } from '@/core/config/env';
 import { isProduction } from '@/core/libs/env';
 
 const CSRF_SECRET = envServer.SESSION_SECRET;
-const CSRF_COOKIE_NAME = 'csrf_token';
+const CSRF_COOKIE_NAME = 'csrfToken';
 const CSRF_HEADER_NAME = 'x-csrf-token';
 const CSRF_TOKEN_EXPIRY = 60 * 60 * 24;
 
