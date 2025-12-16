@@ -1,11 +1,10 @@
-import type { Document, Types } from 'mongoose';
+import type { Document } from 'mongoose';
 import type { z } from 'zod';
 
 import type { loginSchema, registerSchema } from '@/core/schema/user';
 
 /* MODELS */
 export interface Session {
-  _id?: Types.ObjectId;
   refreshToken?: string;
   os?: string;
   browser?: string;
