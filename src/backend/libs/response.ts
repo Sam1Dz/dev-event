@@ -1,5 +1,6 @@
 import 'server-only';
 
+import dayjs from 'dayjs';
 import { NextResponse } from 'next/server';
 
 import { HTTP_STATUS } from '@/backend/constants/http-status';
@@ -25,7 +26,7 @@ export function apiSuccess<T>(
     code,
     detail,
     data,
-    timestamp: new Date().toISOString(),
+    timestamp: dayjs().toISOString(),
   };
 
   return NextResponse.json(successResponse, { status });
@@ -50,7 +51,7 @@ export function apiError(
     type,
     code,
     errors,
-    timestamp: new Date().toISOString(),
+    timestamp: dayjs().toISOString(),
   };
 
   return NextResponse.json(errorResponse, { status });

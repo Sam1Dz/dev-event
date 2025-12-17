@@ -4,6 +4,7 @@ import type { NextRequest } from 'next/server';
 
 import { createHmac, randomBytes, timingSafeEqual } from 'crypto';
 
+import dayjs from 'dayjs';
 import { cookies } from 'next/headers';
 
 import { envServer } from '@/core/config/env';
@@ -25,7 +26,7 @@ const SKIP_PATHS = ['/api/v1/auth/login', '/api/v1/auth/register'];
 export function generateCsrfToken(): string {
   // Generate valid token components
   const token = randomBytes(32).toString('hex');
-  const timestamp = Date.now();
+  const timestamp = dayjs().valueOf();
   const payload = `${token}.${timestamp}`;
 
   // Sign the payload using safe HMAC-SHA256
@@ -82,8 +83,9 @@ export function verifyCsrfToken(token: string): {
 
   // Check for expiration
   const timestamp = parseInt(timestampStr, 10);
-  const now = Date.now();
-  const age = (now - timestamp) / 1000;
+  const tokenDate = dayjs(timestamp);
+  const now = dayjs();
+  const age = now.diff(tokenDate, 'second');
 
   if (age > CSRF_TOKEN_EXPIRY) {
     return { valid: true, expired: true };

@@ -1,5 +1,6 @@
 import 'server-only';
 
+import dayjs from 'dayjs';
 import mongoose, { Schema, type Model } from 'mongoose';
 
 import type { EventModels } from '@/core/types/event';
@@ -135,12 +136,12 @@ EventSchema.pre<EventModels>('save', async function () {
   // Normalize date to ISO format (YYYY-MM-DD) for consistent storage and queries
   if (this.isNew || this.isModified('date')) {
     try {
-      const dateObj = new Date(this.date);
+      const dateObj = dayjs(this.date);
 
-      if (isNaN(dateObj.getTime())) {
+      if (!dateObj.isValid()) {
         throw new Error('Invalid date format');
       }
-      this.date = dateObj.toISOString().split('T')[0];
+      this.date = dateObj.toISOString();
     } catch {
       throw new Error('Date must be a valid date');
     }

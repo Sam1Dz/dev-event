@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 
 import { Ratelimit } from '@upstash/ratelimit';
+import dayjs from 'dayjs';
 import { cookies } from 'next/headers';
 
 import { withDatabase } from '@/backend/connection';
@@ -103,6 +104,15 @@ export async function POST(req: NextRequest) {
       // Create new session
       const sessionInfo = await getUserAgent(req);
 
+      // Filter out expired sessions to keep the array size manageable
+      const expiredAt = dayjs().subtract(7, 'day').toDate();
+
+      user.sessions = user.sessions.filter(
+        (session) =>
+          session.updatedAt && dayjs(session.updatedAt).isAfter(expiredAt),
+      );
+
+      // Push new session with metadata and tokens
       user.sessions.push({
         ...sessionInfo,
         refreshToken,
