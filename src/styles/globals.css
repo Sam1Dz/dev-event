@@ -1,7 +1,7 @@
 @import 'tailwindcss';
-@custom-variant dark (&:where(.dark, .dark *));
-
 @import '@heroui/styles';
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root,
 .light,
