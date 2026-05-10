@@ -125,7 +125,7 @@ export interface CtaButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEle
 
 ## Project-Specific Context
 
-This is a **Next.js 16.2.1** project with **React 19.2.4** and **React Compiler** enabled:
+This is a **Next.js 16.2.6** project with **React 19.2.6** and **React Compiler** enabled:
 
 - **React Compiler**: Automatically optimizes components - no need for manual `useMemo`/`useCallback` in most cases
 - **TypeScript Strict Mode**: All code must pass strict type checking

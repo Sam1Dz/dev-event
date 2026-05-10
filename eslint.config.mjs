@@ -54,7 +54,7 @@ const eslintConfig = defineConfig([
           pathGroups: [
             {
               group: 'external',
-              pattern: '@/**',
+              pattern: '~/**',
               position: 'after',
             },
           ],
