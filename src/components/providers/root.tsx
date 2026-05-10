@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import type { FC, PropsWithChildren, ReactNode } from 'react';
 
 import { ThemeProvider } from './theme';
 
@@ -25,11 +25,9 @@ import { ThemeProvider } from './theme';
  * @param providers - Array of React component providers to compose.
  * @returns A single provider component that nests all input providers.
  */
-const composeProviders = (
-  ...providers: React.FC<React.PropsWithChildren>[]
-): React.FC<React.PropsWithChildren> => {
-  return ({ children }: React.PropsWithChildren) => {
-    return providers.reduceRight<React.ReactNode>(
+const composeProviders = (...providers: FC<PropsWithChildren>[]): FC<PropsWithChildren> => {
+  return ({ children }: PropsWithChildren) => {
+    return providers.reduceRight<ReactNode>(
       (child, Provider) => <Provider>{child}</Provider>,
       children
     );
@@ -55,7 +53,7 @@ const composeProviders = (
  * @param children - Child components to receive theme context.
  * @returns The themed children wrapper.
  */
-function AppThemeProvider({ children }: React.PropsWithChildren) {
+function AppThemeProvider({ children }: PropsWithChildren) {
   return (
     <ThemeProvider enableSystem attribute="class" defaultTheme="system">
       {children}
