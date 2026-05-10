@@ -21,6 +21,7 @@ Create well-formatted commit: $ARGUMENTS
 
 1. Unless specified with `--no-verify`, automatically runs pre-commit checks:
    - `npm run lint` to ensure code quality
+   - `npm run test` to verify tests pass
    - `npm run build` to verify the build succeeds
 2. Checks which files are staged with `git status`
 3. If 0 files are staged, automatically adds all modified and new files with `git add`
@@ -42,6 +43,9 @@ Create well-formatted commit: $ARGUMENTS
 - **TypeScript**: All new code should maintain proper TypeScript typing
 - **Tailwind CSS 4**: Styling uses the latest Tailwind CSS v4 with new PostCSS integration
 - **App Router**: This uses Next.js App Router (not Pages Router) - route changes go in `src/app/`
+- **Vitest Testing**: Testing is set up with Vitest and jsdom - new features should include tests in `__test__/`
+- **Code Quality**: The project includes ESLint (`npm run lint`) and Prettier (`npm run format`) for code quality
+- **Test Coverage**: When adding new features, include corresponding tests in the `__test__/` directory
 - **Conventional commit format**: Use the format `<type>: <description>` where type is one of:
   - `feat`: A new feature
   - `fix`: A bug fix
@@ -152,6 +156,9 @@ Good commit messages:
 - 🏗️ refactor: optimize component structure for React Compiler
 - 🎨 style: update Tailwind CSS utility classes for responsive design
 - 📱 feat: implement mobile-first responsive layout
+- ✅ test: add unit tests for theme provider component
+- 🧪 test: add integration tests for root provider
+- 🤡 test: mock external API dependencies in tests
 
 Example of splitting commits:
 
@@ -166,12 +173,13 @@ Example of splitting commits:
 
 ## Command Options
 
-- `--no-verify`: Skip running the pre-commit checks (lint, build)
+- `--no-verify`: Skip running the pre-commit checks (lint, test, build)
 - `--amend`: Amend the previous commit (use with caution)
 
 ## Important Notes
 
-- By default, pre-commit checks (`npm run lint`, `npm run build`) will run to ensure code quality
+- **Never add `Co-authored-by` trailers** — do not append any `Co-authored-by` line to any commit message, under any circumstances
+- By default, pre-commit checks (`npm run lint`, `npm run test`, `npm run build`) will run to ensure code quality
 - If these checks fail, you'll be asked if you want to proceed with the commit anyway or fix the issues first
 - If specific files are already staged, the command will only commit those files
 - If no files are staged, it will automatically stage all modified and new files
