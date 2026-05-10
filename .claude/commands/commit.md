@@ -171,6 +171,7 @@ Example of splitting commits:
 
 ## Important Notes
 
+- **Never add `Co-authored-by` trailers** — do not append any `Co-authored-by` line to any commit message, under any circumstances
 - By default, pre-commit checks (`npm run lint`, `npm run build`) will run to ensure code quality
 - If these checks fail, you'll be asked if you want to proceed with the commit anyway or fix the issues first
 - If specific files are already staged, the command will only commit those files
