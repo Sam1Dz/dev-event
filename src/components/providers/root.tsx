@@ -32,7 +32,7 @@ const composeProviders = (
     return providers.reduceRight<React.ReactNode>(
       (child, Provider) => <Provider>{child}</Provider>,
       children
-    ) as React.ReactElement;
+    );
   };
 };
 
